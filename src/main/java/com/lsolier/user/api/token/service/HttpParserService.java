@@ -1,5 +1,6 @@
 package com.lsolier.user.api.token.service;
 
+import com.lsolier.user.api.token.model.JwtToken;
 import com.lsolier.user.api.token.model.UserAuthentication;
 import com.lsolier.user.api.token.utils.TokenUtil;
 import org.apache.logging.log4j.util.Strings;
@@ -26,11 +27,7 @@ public class HttpParserService {
         }
 
         String accessToken = authorizationToken.replace(TokenUtil.BEARER_PREFIX, Strings.EMPTY);
-        String subject = this.tokenService.readToken(accessToken);
-        if(Objects.nonNull(subject)) {
-            return new UserAuthentication(subject, Boolean.TRUE);
-        }
-
-        return new UserAuthentication(Strings.EMPTY, Boolean.FALSE);
+        JwtToken jwtToken = this.tokenService.readToken(accessToken);
+        return new UserAuthentication(jwtToken.getSubject(), jwtToken.isValid());
     }
 }

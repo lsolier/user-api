@@ -10,4 +10,12 @@ public final class TokenUtil {
 
     public static final String BEARER_PREFIX = "Bearer ";
 
+    public static final String TOKEN_ENDPOINT = "/tokens";
+
+    public static final String H2_ENDPOINTS = "/h2-console/**";
+
+    public static final String ACTUATOR_ENDPOINTS = "/actuator/**";
+
+    public static final String[] PERMIT_ALL_PATTERNS = new String[] { TOKEN_ENDPOINT, H2_ENDPOINTS, ACTUATOR_ENDPOINTS };
+
 }
