@@ -1,7 +1,10 @@
 package com.lsolier.user.api.utils;
 
 import com.lsolier.user.api.model.dto.PhoneRequest;
-import com.lsolier.user.api.model.dto.UserRequest;
+import com.lsolier.user.api.model.dto.CreateUserRequest;
+import com.lsolier.user.api.model.dto.PhoneResponse;
+import com.lsolier.user.api.model.dto.UpdateUserRequest;
+import com.lsolier.user.api.model.dto.UserDetailResponse;
 import com.lsolier.user.api.model.dto.UserResponse;
 import com.lsolier.user.api.model.entity.PhoneEntity;
 import com.lsolier.user.api.model.entity.UserEntity;
@@ -15,18 +18,29 @@ public final class UserMapper {
         throw new UnsupportedOperationException();
     }
 
-    public static UserEntity mapToUserEntity(String userId, String token, UserRequest userRequest) {
+    public static UserEntity mapToUserEntity(UserEntity userEntity, UpdateUserRequest updateUserRequest) {
+        userEntity.setName(updateUserRequest.getName());
+        userEntity.setEmail(updateUserRequest.getEmail());
+        userEntity.setPassword(updateUserRequest.getEmail());
+
+        Function<PhoneRequest, PhoneEntity> toEntity = phoneRequest -> mapToPhoneEntity(userEntity, phoneRequest);
+        userEntity.setPhones(updateUserRequest.getPhones().stream().sequential().map(toEntity).collect(Collectors.toList()));
+
+        return userEntity;
+    }
+
+    public static UserEntity mapToUserEntity(String userId, String token, CreateUserRequest createUserRequest) {
         UserEntity userEntity = UserEntity.builder()
                 .id(userId)
-                .name(userRequest.getName())
-                .email(userRequest.getEmail())
-                .password(userRequest.getPassword())
+                .name(createUserRequest.getName())
+                .email(createUserRequest.getEmail())
+                .password(createUserRequest.getPassword())
                 .token(token)
                 .isActive(Boolean.TRUE)
                 .build();
 
         Function<PhoneRequest, PhoneEntity> toEntity = phoneRequest -> mapToPhoneEntity(userEntity, phoneRequest);
-        userEntity.setPhones(userRequest.getPhones().stream().sequential().map(toEntity).collect(Collectors.toList()));
+        userEntity.setPhones(createUserRequest.getPhones().stream().sequential().map(toEntity).collect(Collectors.toList()));
 
         return userEntity;
     }
@@ -48,6 +62,23 @@ public final class UserMapper {
                 .lastLogin(userEntity.getLastLogin())
                 .token(userEntity.getToken())
                 .isActive(userEntity.isActive())
+                .build();
+    }
+
+    public static UserDetailResponse mapToUserDetailResponse(UserEntity userEntity) {
+        return UserDetailResponse.builder()
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .phones(userEntity.getPhones().stream().map(UserMapper::mapToPhoneResponse).collect(Collectors.toList()))
+                .isActive(userEntity.isActive())
+                .build();
+    }
+
+    public static PhoneResponse mapToPhoneResponse(PhoneEntity phoneEntity) {
+        return PhoneResponse.builder()
+                .number(phoneEntity.getNumber())
+                .cityCode(phoneEntity.getCityCode())
+                .countryCode(phoneEntity.getCountryCode())
                 .build();
     }
 }
