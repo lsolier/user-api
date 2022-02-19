@@ -1,5 +1,6 @@
 package com.lsolier.user.api.token.service;
 
+import com.lsolier.user.api.session.UserApiStore;
 import com.lsolier.user.api.token.model.JwtToken;
 import com.lsolier.user.api.token.model.TokenResponse;
 import com.lsolier.user.api.token.properties.TokenProperties;
@@ -20,8 +21,11 @@ public class TokenService {
 
     private final TokenProperties tokenProperties;
 
-    public TokenService(TokenProperties tokenProperties) {
+    private final UserApiStore userApiStore;
+
+    public TokenService(TokenProperties tokenProperties, UserApiStore userApiStore) {
         this.tokenProperties = tokenProperties;
+        this.userApiStore = userApiStore;
     }
 
     public TokenResponse generateToken() {
@@ -45,6 +49,8 @@ public class TokenService {
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
+
+            this.userApiStore.saveToken(token);
 
             return JwtToken.builder().subject(subject).isValid(Boolean.TRUE).build();
         } catch (Exception ex) {

@@ -1,5 +1,7 @@
 package com.lsolier.user.api.usermanager.service.impl;
 
+import com.lsolier.user.api.session.UserApiStore;
+import com.lsolier.user.api.usermanager.exception.UserDuplicatedException;
 import com.lsolier.user.api.usermanager.exception.UserNotFoundException;
 import com.lsolier.user.api.usermanager.model.dto.CreateUserRequest;
 import com.lsolier.user.api.usermanager.model.dto.UpdateUserRequest;
@@ -12,6 +14,8 @@ import com.lsolier.user.api.usermanager.utils.UserMapper;
 import com.lsolier.user.api.usermanager.utils.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +28,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final UserApiStore userApiStore;
 
     @Override
     public List<UserResponse> getAllUsers() {
@@ -40,13 +46,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse saveUser(CreateUserRequest createUserRequest) {
-        //TODO validar email
+        validateEmail(createUserRequest.getEmail());
         String userId = UserUtil.generateId();
-        //TODO obtener token
-        UserEntity userEntity = UserMapper.mapToUserEntity(userId, "token", createUserRequest);
-
-        log.info("User to register: {}", userEntity);
-
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        UserEntity userEntity = UserMapper.mapToUserEntity(userId, this.userApiStore.getToken(), createUserRequest, encoder);
         return UserMapper.mapToUserResponse(this.userRepository.save(userEntity));
     }
 
@@ -63,6 +66,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String id) {
         UserEntity userEntityToBeDeleted= this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         this.userRepository.delete(userEntityToBeDeleted);
+    }
+
+    private void validateEmail(String email) {
+        this.userRepository.findByEmail(email).ifPresent(userEntity -> {
+            log.error("User email already exist, User found: {}", userEntity);
+            throw new UserDuplicatedException();
+        });
     }
 
 }

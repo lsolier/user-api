@@ -8,6 +8,7 @@ import com.lsolier.user.api.usermanager.model.dto.UserDetailResponse;
 import com.lsolier.user.api.usermanager.model.dto.UserResponse;
 import com.lsolier.user.api.usermanager.model.entity.PhoneEntity;
 import com.lsolier.user.api.usermanager.model.entity.UserEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,7 +22,6 @@ public final class UserMapper {
     public static UserEntity mapToUserEntity(UserEntity userEntity, UpdateUserRequest updateUserRequest) {
         userEntity.setName(updateUserRequest.getName());
         userEntity.setEmail(updateUserRequest.getEmail());
-        userEntity.setPassword(updateUserRequest.getEmail());
 
         Function<PhoneRequest, PhoneEntity> toEntity = phoneRequest -> mapToPhoneEntity(userEntity, phoneRequest);
         userEntity.setPhones(updateUserRequest.getPhones().stream().sequential().map(toEntity).collect(Collectors.toList()));
@@ -29,12 +29,12 @@ public final class UserMapper {
         return userEntity;
     }
 
-    public static UserEntity mapToUserEntity(String userId, String token, CreateUserRequest createUserRequest) {
+    public static UserEntity mapToUserEntity(String userId, String token, CreateUserRequest createUserRequest, PasswordEncoder encoder) {
         UserEntity userEntity = UserEntity.builder()
                 .id(userId)
                 .name(createUserRequest.getName())
                 .email(createUserRequest.getEmail())
-                .password(createUserRequest.getPassword())
+                .password(encoder.encode(createUserRequest.getPassword()))
                 .token(token)
                 .isActive(Boolean.TRUE)
                 .build();

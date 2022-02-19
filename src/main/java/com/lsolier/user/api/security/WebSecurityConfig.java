@@ -27,6 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(this.httpParserService), UsernamePasswordAuthenticationFilter.class);
+
+        http.headers().frameOptions().disable();
     }
 
 }

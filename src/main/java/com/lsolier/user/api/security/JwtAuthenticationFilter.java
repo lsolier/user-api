@@ -3,6 +3,7 @@ package com.lsolier.user.api.security;
 import com.lsolier.user.api.token.service.HttpParserService;
 import com.lsolier.user.api.token.utils.TokenUtil;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
