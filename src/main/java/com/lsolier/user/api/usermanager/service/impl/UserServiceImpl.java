@@ -47,9 +47,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(CreateUserRequest createUserRequest) {
         validateEmail(createUserRequest.getEmail());
-        String userId = UserUtils.generateId();
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        UserEntity userEntity = UserMapper.mapToUserEntity(userId, this.userApiStore.getToken(), createUserRequest, encoder);
+        UserEntity userEntity = UserMapper.mapToUserEntity(UserUtils.generateId(), this.userApiStore.getToken(), createUserRequest, encoder);
         return UserMapper.mapToUserResponse(this.userRepository.save(userEntity));
     }
 
