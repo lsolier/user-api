@@ -1,8 +1,8 @@
 package com.lsolier.user.api.usermanager.service.impl;
 
 import com.lsolier.user.api.session.UserApiStore;
-import com.lsolier.user.api.usermanager.exception.UserDuplicatedException;
-import com.lsolier.user.api.usermanager.exception.UserNotFoundException;
+import com.lsolier.user.api.exception.UserDuplicatedException;
+import com.lsolier.user.api.exception.UserNotFoundException;
 import com.lsolier.user.api.usermanager.model.dto.CreateUserRequest;
 import com.lsolier.user.api.usermanager.model.dto.UpdateUserRequest;
 import com.lsolier.user.api.usermanager.model.dto.UserDetailResponse;
