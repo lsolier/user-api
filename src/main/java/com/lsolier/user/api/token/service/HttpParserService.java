@@ -1,9 +1,8 @@
 package com.lsolier.user.api.token.service;
 
-import com.lsolier.user.api.session.UserApiStore;
 import com.lsolier.user.api.token.model.JwtToken;
 import com.lsolier.user.api.token.model.UserAuthentication;
-import com.lsolier.user.api.token.utils.TokenUtil;
+import com.lsolier.user.api.security.SecurityUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -21,13 +20,13 @@ public class HttpParserService {
     }
 
     public Authentication getUserAuthentication(HttpServletRequest request) {
-        String authorizationToken = request.getHeader(TokenUtil.AUTHORIZATION_HEADER);
+        String authorizationToken = request.getHeader(SecurityUtils.AUTHORIZATION_HEADER);
 
         if (Objects.isNull(authorizationToken)) {
             return new UserAuthentication(Strings.EMPTY, Boolean.FALSE);
         }
 
-        String accessToken = authorizationToken.replace(TokenUtil.BEARER_PREFIX, Strings.EMPTY);
+        String accessToken = authorizationToken.replace(SecurityUtils.BEARER_PREFIX, Strings.EMPTY);
         JwtToken jwtToken = this.tokenService.readToken(accessToken);
         return new UserAuthentication(jwtToken.getSubject(), jwtToken.isValid());
     }

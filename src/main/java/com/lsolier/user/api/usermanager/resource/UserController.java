@@ -5,6 +5,8 @@ import com.lsolier.user.api.usermanager.model.dto.UpdateUserRequest;
 import com.lsolier.user.api.usermanager.model.dto.UserDetailResponse;
 import com.lsolier.user.api.usermanager.model.dto.UserResponse;
 import com.lsolier.user.api.usermanager.service.UserService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,11 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/users")
+@ApiResponses(value = {
+        @ApiResponse(code=400, message = "This is a bad request, please follow the API documentation for the proper request format."),
+        @ApiResponse(code=401, message = "Due to security constraints, your access request cannot be authorized. "),
+        @ApiResponse(code=500, message = "The server is down. Please make sure that the Location microservice is running.")
+})
 public class UserController {
 
     private final UserService userService;

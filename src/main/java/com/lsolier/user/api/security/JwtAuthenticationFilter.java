@@ -1,9 +1,7 @@
 package com.lsolier.user.api.security;
 
 import com.lsolier.user.api.token.service.HttpParserService;
-import com.lsolier.user.api.token.utils.TokenUtil;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private RequestMatcher getIgnoreRequestMatcher() {
         List<RequestMatcher> matchers = new ArrayList<>();
-        for (String pattern : TokenUtil.PERMIT_ALL_PATTERNS) {
+        for (String pattern : SecurityUtils.PERMIT_ALL_PATTERNS) {
             matchers.add(new AntPathRequestMatcher(pattern));
         }
         return new OrRequestMatcher(matchers);

@@ -1,7 +1,7 @@
 package com.lsolier.user.api.usermanager.model.dto;
 
 import com.lsolier.user.api.usermanager.annotation.PasswordValidation;
-import com.lsolier.user.api.usermanager.utils.UserUtil;
+import com.lsolier.user.api.usermanager.utils.UserUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class CreateUserRequest {
     @NotBlank(message = "User name cannot be empty")
     private String name;
 
-    @Email(regexp = UserUtil.EMAIL_REGEX, message = "Invalid email format")
+    @Email(regexp = UserUtils.EMAIL_REGEX, message = "Invalid email format")
     @NotBlank(message = "Email cannot be empty")
     private String email;
 

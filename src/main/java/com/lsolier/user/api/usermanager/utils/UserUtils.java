@@ -2,9 +2,9 @@ package com.lsolier.user.api.usermanager.utils;
 
 import java.util.UUID;
 
-public final class UserUtil {
+public final class UserUtils {
 
-    private UserUtil() {
+    private UserUtils() {
         throw new UnsupportedOperationException();
     }
 

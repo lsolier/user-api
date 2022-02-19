@@ -11,7 +11,7 @@ import com.lsolier.user.api.usermanager.model.entity.UserEntity;
 import com.lsolier.user.api.usermanager.repository.UserRepository;
 import com.lsolier.user.api.usermanager.service.UserService;
 import com.lsolier.user.api.usermanager.utils.UserMapper;
-import com.lsolier.user.api.usermanager.utils.UserUtil;
+import com.lsolier.user.api.usermanager.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse saveUser(CreateUserRequest createUserRequest) {
         validateEmail(createUserRequest.getEmail());
-        String userId = UserUtil.generateId();
+        String userId = UserUtils.generateId();
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         UserEntity userEntity = UserMapper.mapToUserEntity(userId, this.userApiStore.getToken(), createUserRequest, encoder);
         return UserMapper.mapToUserResponse(this.userRepository.save(userEntity));
