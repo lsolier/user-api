@@ -2,6 +2,7 @@ package com.lsolier.user.api.usermanager.model.dto;
 
 import com.lsolier.user.api.usermanager.utils.UserUtils;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UpdateUserRequest {
 
     @NotBlank(message = "User name cannot be empty")

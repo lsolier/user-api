@@ -1,6 +1,7 @@
 package com.lsolier.user.api.usermanager.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PhoneRequest {
 
     @NotBlank(message = "Phone number cannot be empty")
