@@ -9,7 +9,7 @@ public class UserAuthentication implements Authentication {
 
     private final String name;
 
-    private final boolean authenticated;
+    private boolean authenticated;
 
     public UserAuthentication(String name, boolean authenticated) {
         super();
@@ -44,7 +44,7 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
+        this.authenticated = isAuthenticated;
     }
 
     @Override

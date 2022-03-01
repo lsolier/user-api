@@ -1,6 +1,7 @@
 package com.lsolier.user.api.usermanager.annotation;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,8 +10,11 @@ import java.util.regex.Pattern;
 
 public class PasswordValidator implements ConstraintValidator<PasswordValidation, String> {
 
-    @Value("${password.validation.regexp}")
-    private String passwordValidationRegex;
+    private final String passwordValidationRegex;
+
+    public PasswordValidator(@Value("${password.validation.regexp}") String passwordValidationRegex) {
+        this.passwordValidationRegex = passwordValidationRegex;
+    }
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {

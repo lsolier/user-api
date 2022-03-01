@@ -74,7 +74,7 @@ public final class UserMapper {
                 .build();
     }
 
-    public static PhoneResponse mapToPhoneResponse(PhoneEntity phoneEntity) {
+    private static PhoneResponse mapToPhoneResponse(PhoneEntity phoneEntity) {
         return PhoneResponse.builder()
                 .number(phoneEntity.getNumber())
                 .cityCode(phoneEntity.getCityCode())

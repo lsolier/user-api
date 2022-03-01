@@ -51,7 +51,7 @@ http://localhost:8080/swagger-ui.html
 
 ## How to access to H2 database console
 
-- Go to your and enter the following URL:
+- Go to your browser and enter the following URL:
 ```sh
 http://localhost:8080/h2-console/
 ```
